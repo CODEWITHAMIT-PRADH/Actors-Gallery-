@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMI Product - Actors Database</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        :root {
+            --primary: #0f0f1a;
+            --secondary: #1a1a2e;
+            --accent: #ff2e63;
+            --accent-light: #ff5c8a;
+            --gold: #ffd700;
+            --silver: #c0c0c0;
+            --light: #f8f9fa;
+            --dark: #0a0a12;
+            --text: #e8eaed;
+            --text-light: #9aa0a6;
+            --card-bg: #1e1e2e;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-dark: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+            --gradient-accent: linear-gradient(135deg, var(--accent), var(--accent-light));
+            --gradient-gold: linear-gradient(135deg, #ffd700, #ffed4e);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.4);
+            --radius: 20px;
+            --radius-sm: 12px;
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --transition-fast: all 0.2s ease;
+        }
+        
+        body {
+            background: var(--gradient-dark);
+            color: var(--text);
+            min-height: 100vh;
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+        
+        /* Premium Header Styles */
+        header {
+            background: rgba(15, 15, 26, 0.95);
+            backdrop-filter: blur(20px);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+        
+        .logo h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, var(--gold), #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+        }
+        
+        .logo span {
+            color: var(--accent);
+            text-shadow: 0 2px 10px rgba(255, 46, 99, 0.4);
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 8px rgba(255, 215, 0, 0.4));
+            animation: pulse 2s infinite alternate;
+        }
+        
+        .ami-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            border-left: 3px solid var(--accent);
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 1px;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+        
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 0;
+            position: relative;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-gold);
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+        
+        nav a:hover::after, nav a.active::after {
+            width: 100%;
+        }
+        
+        nav a:hover {
+            color: var(--gold);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1.2rem;
+        }
+        
+        .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: var(--transition);
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-login {
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+        }
+        
+        .btn-login:hover {
+            background: rgba(255, 215, 0, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        .btn-signup {
+            background: var(--gradient-accent);
+            color: white;
+        }
+        
+        .btn-signup:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 46, 99, 0.5);
+        }
+        
+        /* Premium Search Section */
+        .search-section {
+            padding: 6rem 2rem 4rem;
+            background: url('https://images.unsplash.com/photo-1489599809505-7c8e1c75ce13?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') center/cover no-repeat;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .search-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(15, 15, 26, 0.9) 0%, rgba(26, 26, 46, 0.8) 100%);
+            z-index: 1;
+        }
+        
+        .search-container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .search-section h2 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, var(--text), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+        
+        .search-section p {
+            font-size: 1.4rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            font-weight: 300;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        
+        .search-bar-container {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .search-bar {
+            display: flex;
+            border-radius: 60px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: var(--transition);
+        }
+        
+        .search-bar:focus-within {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 215, 0, 0.5);
+        }
+        
+        .search-bar input {
+            flex: 1;
+            padding: 1.5rem 2rem;
+            border: none;
+            font-size: 1.2rem;
+            outline: none;
+            background: transparent;
+            color: var(--text);
+        }
+        
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .search-bar button {
+            background: var(--gradient-accent);
+            color: white;
+            border: none;
+            padding: 0 2.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .search-bar button:hover {
+            background: linear-gradient(135deg, #d63447, #e94560);
+            padding: 0 3rem;
+        }
+        
+        .search-features {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .search-tag {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .search-tag:hover {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: var(--gold);
+            transform: translateY(-3px);
+        }
+        
+        /* Premium Filter Section */
+        .filter-section {
+            padding: 2rem 2rem;
+            background: rgba(30, 30, 46, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .filter-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: var(--transition);
+        }
+        
+        .filter-btn:hover::before {
+            left: 100%;
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--gradient-accent);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 46, 99, 0.3);
+        }
+        
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .view-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .view-btn.active, .view-btn:hover {
+            background: var(--gradient-accent);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 46, 99, 0.3);
+        }
+        
+        /* Premium Actors Grid - FIXED IMAGE CSS */
+        .actors-section {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            font-size: 2.8rem;
+            color: var(--text);
+            position: relative;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 120px;
+            height: 5px;
+            background: var(--gradient-accent);
+            margin: 1.5rem auto;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(255, 46, 99, 0.4);
+        }
+        
+        .actors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+        
+        .actors-grid.list-view {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        
+        .actor-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .actor-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 100%);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .actor-card:hover {
+            transform: translateY(-15px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .actor-card:hover::before {
+            opacity: 1;
+        }
+        
+        .actor-card.list-view {
+            display: flex;
+            flex-direction: row;
+            height: 220px;
+        }
+        
+        .actor-card.list-view .actor-image-container {
+            width: 200px;
+            height: 100%;
+            flex-shrink: 0;
+        }
+        
+        .actor-card.list-view .actor-image {
+            width: 100%;
+            height: 100%;
+            border-radius: var(--radius) 0 0 var(--radius);
+            object-fit: cover;
+        }
+        
+        .actor-image-container {
+            width: 100%;
+            height: 350px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .actor-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+            position: relative;
+            z-index: 0;
+            display: block;
+        }
+        
+        .actor-card:hover .actor-image {
+            transform: scale(1.05);
+        }
+        
+        .actor-info {
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .actor-card.list-view .actor-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .actor-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-family: 'Playfair Display', serif;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .actor-industry {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .hollywood {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            box-shadow: 0 5px 15px rgba(116, 185, 255, 0.3);
+        }
+        
+        .bollywood {
+            background: linear-gradient(135deg, #fab1a0, #e17055);
+            color: white;
+            box-shadow: 0 5px 15px rgba(250, 177, 160, 0.3);
+        }
+        
+        .actor-bio {
+            color: var(--text-light);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+        
+        .actor-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        .favorite-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0.5rem;
+            border-radius: 50%;
+        }
+        
+        .favorite-btn:hover {
+            color: var(--accent);
+            transform: scale(1.2);
+        }
+        
+        .favorite-btn.active {
+            color: var(--accent);
+        }
+        
+        /* Premium Loading Spinner */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 4rem;
+        }
+        
+        .spinner {
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-top: 5px solid var(--accent);
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 2rem;
+            box-shadow: 0 0 20px rgba(255, 46, 99, 0.3);
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Premium Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 5rem 2rem 2.5rem;
+            margin-top: 5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--gradient-accent);
+            border-radius: 3px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 1.2rem;
+        }
+        
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .footer-links a:hover {
+            color: var(--gold);
+            transform: translateX(5px);
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 1.2rem;
+            margin-top: 2rem;
+        }
+        
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: white;
+            transition: var(--transition);
+            font-size: 1.3rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .social-icons a:hover {
+            background: var(--gradient-accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 46, 99, 0.4);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        /* Feedback Form */
+        .feedback-form {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .feedback-form h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .feedback-form textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 120px;
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+        
+        .feedback-form textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(255, 46, 99, 0.2);
+        }
+        
+        .feedback-form button {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--gradient-accent);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .feedback-form button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 46, 99, 0.4);
+        }
+        
+        /* Premium Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 500px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            animation: modalAppear 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .close-modal:hover {
+            color: var(--accent);
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(90deg);
+        }
+        
+        .modal h2 {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            color: var(--text);
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+        }
+        
+        .form-group input:focus {
+            border-color: var(--accent);
+            outline: none;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 3px rgba(255, 46, 99, 0.2);
+        }
+        
+        .modal-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: var(--gradient-accent);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 1rem;
+            box-shadow: 0 5px 15px rgba(255, 46, 99, 0.3);
+        }
+        
+        .modal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 46, 99, 0.5);
+        }
+        
+        .modal-footer {
+            text-align: center;
+            margin-top: 2.5rem;
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+        
+        .modal-footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .modal-footer a:hover {
+            color: var(--gold);
+        }
+        
+        /* Premium Actor Page Styles - FIXED IMAGE CSS */
+        .actor-page {
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: var(--gradient-accent);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            text-decoration: none;
+            margin-bottom: 3rem;
+            transition: var(--transition);
+            font-weight: 600;
+            box-shadow: var(--shadow);
+        }
+        
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            gap: 1.2rem;
+        }
+        
+        .actor-header {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .actor-image-main-container {
+            width: 350px;
+            height: 450px;
+            flex-shrink: 0;
+            overflow: hidden;
+            border-radius: var(--radius);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .actor-main-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+            display: block;
+        }
+        
+        .actor-image-main-container:hover .actor-main-image {
+            transform: scale(1.03);
+        }
+        
+        .actor-details {
+            flex: 1;
+        }
+        
+        .actor-details h1 {
+            font-size: 3.2rem;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+        
+        .actor-industry-large {
+            display: inline-block;
+            padding: 0.7rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .actor-bio-large {
+            font-size: 1.2rem;
+            line-height: 1.7;
+            color: var(--text-light);
+            margin-bottom: 2.5rem;
+        }
+        
+        .actor-stats {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .stat {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.8rem 1.2rem;
+            border-radius: var(--radius);
+            flex: 1;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        
+        .gallery-section {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gallery-section h2 {
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            color: var(--text);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.8rem;
+        }
+        
+        .gallery-image-container {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            border-radius: var(--radius-sm);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+            cursor: pointer;
+            display: block;
+        }
+        
+        .gallery-image-container:hover .gallery-image {
+            transform: scale(1.08);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Premium Error Message */
+        .error-message {
+            text-align: center;
+            padding: 4rem;
+            color: var(--accent);
+            font-size: 1.4rem;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Premium Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: var(--gradient-accent);
+            color: white;
+            padding: 1.2rem 2rem;
+            border-radius: var(--radius-sm);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            z-index: 3000;
+            transform: translateX(400px);
+            opacity: 0;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            max-width: 400px;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1100px) {
+            .actor-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .actor-image-main-container {
+                margin: 0 auto;
+            }
+            
+            .actor-stats {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .logo-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                gap: 1.5rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .auth-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .search-section h2 {
+                font-size: 2.5rem;
+            }
+            
+            .search-section p {
+                font-size: 1.2rem;
+            }
+            
+            .filter-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .actor-card.list-view {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .actor-card.list-view .actor-image-container {
+                width: 100%;
+                height: 300px;
+            }
+            
+            .actor-card.list-view .actor-image {
+                border-radius: var(--radius) var(--radius) 0 0;
+            }
+            
+            .actor-stats {
+                flex-wrap: wrap;
+            }
+            
+            .stat {
+                flex: 0 0 calc(50% - 1rem);
+            }
+            
+            .toast {
+                right: 20px;
+                left: 20px;
+                max-width: none;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .search-section {
+                padding: 4rem 1rem 3rem;
+            }
+            
+            .search-section h2 {
+                font-size: 2rem;
+            }
+            
+            .actors-section {
+                padding: 3rem 1rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .actors-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .actor-details h1 {
+                font-size: 2.5rem;
+            }
+            
+            .stat {
+                flex: 0 0 100%;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .actor-image-main-container {
+                width: 100%;
+                max-width: 300px;
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Premium Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-crown logo-icon"></i>
+                    <h1>Star<span>Base</span></h1>
+                </div>
+                <div class="ami-logo">AMI PRODUCT</div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#" id="bollywoodLink"><i class="fas fa-bolt"></i> Bollywood</a></li>
+                    <li><a href="#" id="hollywoodLink"><i class="fas fa-film"></i> Hollywood</a></li>
+                    <li><a href="#" id="trendingLink"><i class="fas fa-fire"></i> Trending</a></li>
+                    <li><a href="#" id="favoritesLink"><i class="fas fa-heart"></i> Favorites</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <button class="btn btn-login" id="loginBtn"><i class="fas fa-user"></i> Login</button>
+                <button class="btn btn-signup"><i class="fas fa-star"></i> Sign Up</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Premium Search Section -->
+    <section class="search-section">
+        <div class="search-container">
+            <h2>Discover Cinema's Brightest Stars</h2>
+            <p>Explore our exclusive database of Bollywood and Hollywood celebrities with detailed biographies, high-quality images, and filmographies</p>
+            <div class="search-bar-container">
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="Search for actors, actresses, or directors...">
+                    <button id="searchBtn"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+            <div class="search-features">
+                <div class="search-tag">Bollywood Stars</div>
+                <div class="search-tag">Hollywood Icons</div>
+                <div class="search-tag">Oscar Winners</div>
+                <div class="search-tag">Rising Stars</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Premium Filter Section -->
+    <section class="filter-section">
+        <div class="filter-container">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All Stars</button>
+                <button class="filter-btn" data-filter="bollywood">Bollywood</button>
+                <button class="filter-btn" data-filter="hollywood">Hollywood</button>
+                <button class="filter-btn" data-filter="male">Actors</button>
+                <button class="filter-btn" data-filter="female">Actresses</button>
+            </div>
+            <div class="view-toggle">
+                <button class="view-btn active" id="gridView"><i class="fas fa-th"></i></button>
+                <button class="view-btn" id="listView"><i class="fas fa-list"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Premium Loading Spinner -->
+    <div class="loading" id="loadingSpinner">
+        <div class="spinner"></div>
+        <p>Searching our celebrity database...</p>
+    </div>
+
+    <!-- Premium Actors Grid -->
+    <section class="actors-section">
+        <h2 class="section-title">Featured Celebrities</h2>
+        <div class="actors-grid" id="actorsGrid">
+            <!-- Actor cards will be dynamically generated here -->
+        </div>
+        <div class="error-message" id="errorMessage" style="display: none;">
+            <i class="fas fa-exclamation-circle"></i> No celebrities found. Please try a different search term.
+        </div>
+    </section>
+
+    <!-- Premium Actor Page -->
+    <section class="actor-page" id="actorPage">
+        <!-- Actor details will be dynamically generated here -->
+    </section>
+
+    <!-- Premium Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>StarBase</h3>
+                <p>Your premier destination for comprehensive celebrity information, high-resolution galleries, and exclusive content from the world of cinema.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Bollywood Stars</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Hollywood Icons</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Award Winners</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> New Additions</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Information</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Terms of Service</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Feedback</h3>
+                <p>We value your feedback. Let us know how we can improve your experience.</p>
+                <div class="feedback-form">
+                    <h4>Share Your Thoughts</h4>
+                    <textarea placeholder="Tell us what you think about our platform..."></textarea>
+                    <button type="submit">Submit Feedback</button>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 AMI Product. All rights reserved. | Premium Celebrity Database</p>
+        </div>
+    </footer>
+
+    <!-- Premium Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <h2>Access StarBase</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="modal-btn">Login to StarBase</button>
+            </form>
+            <div class="modal-footer">
+                <p>Don't have an account? <a href="#">Join StarBase Premium</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Action completed successfully!</span>
+    </div>
+
+    <script>
+        // DOM Elements
+        const actorsGrid = document.getElementById('actorsGrid');
+        const actorPage = document.getElementById('actorPage');
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginModal = document.getElementById('loginModal');
+        const closeModal = document.getElementById('closeModal');
+        const loginForm = document.getElementById('loginForm');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const errorMessage = document.getElementById('errorMessage');
+        const bollywoodLink = document.getElementById('bollywoodLink');
+        const hollywoodLink = document.getElementById('hollywoodLink');
+        const trendingLink = document.getElementById('trendingLink');
+        const favoritesLink = document.getElementById('favoritesLink');
+        const gridView = document.getElementById('gridView');
+        const listView = document.getElementById('listView');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+        const searchTags = document.querySelectorAll('.search-tag');
+        const feedbackForm = document.querySelector('.feedback-form');
+        const feedbackTextarea = feedbackForm.querySelector('textarea');
+        const feedbackButton = feedbackForm.querySelector('button');
+
+        // Wikipedia API configuration
+        const WIKIPEDIA_API_URL = 'https://en.wikipedia.org/api/rest_v1/page/summary/';
+
+        // Popular actors for initial display
+        const popularActors = [
+            { name: "Shah Rukh Khan", industry: "Bollywood", gender: "male" },
+            { name: "Deepika Padukone", industry: "Bollywood", gender: "female" },
+            { name: "Amitabh Bachchan", industry: "Bollywood", gender: "male" },
+            { name: "Leonardo DiCaprio", industry: "Hollywood", gender: "male" },
+            { name: "Jennifer Lawrence", industry: "Hollywood", gender: "female" },
+            { name: "Tom Cruise", industry: "Hollywood", gender: "male" },
+            { name: "Priyanka Chopra", industry: "Bollywood", gender: "female" },
+            { name: "Brad Pitt", industry: "Hollywood", gender: "male" }
+        ];
+
+        // Favorites storage
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+        // Display popular actors on page load
+        function displayPopularActors() {
+            actorsGrid.innerHTML = '';
+            errorMessage.style.display = 'none';
+            
+            popularActors.forEach(actor => {
+                fetchActorData(actor.name, actor.industry, actor.gender, false);
+            });
+        }
+
+        // Fetch actor data from Wikipedia
+        async function fetchActorData(actorName, industry, gender, isSearch = false) {
+            try {
+                const response = await fetch(`${WIKIPEDIA_API_URL}${encodeURIComponent(actorName)}`);
+                
+                if (!response.ok) {
+                    throw new Error('Actor not found');
+                }
+                
+                const data = await response.json();
+                
+                // Create actor card
+                createActorCard(actorName, industry, gender, data, isSearch);
+                
+            } catch (error) {
+                console.error('Error fetching actor data:', error);
+                
+                if (isSearch) {
+                    loadingSpinner.style.display = 'none';
+                    errorMessage.style.display = 'block';
+                }
+            }
+        }
+
+        // Create actor card
+        function createActorCard(actorName, industry, gender, data, isSearch = false) {
+            const actorCard = document.createElement('div');
+            actorCard.className = 'actor-card';
+            actorCard.dataset.industry = industry.toLowerCase();
+            actorCard.dataset.gender = gender;
+            
+            // Use thumbnail from Wikipedia if available, otherwise use placeholder
+            const imageUrl = data.thumbnail ? data.thumbnail.source : `https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80`;
+            const isFavorite = favorites.includes(actorName);
+            
+            actorCard.innerHTML = `
+                <div class="actor-image-container">
+                    <img src="${imageUrl}" alt="${actorName}" class="actor-image">
+                </div>
+                <div class="actor-info">
+                    <h3 class="actor-name">${actorName} ${isFavorite ? '<i class="fas fa-heart" style="color: var(--accent);"></i>' : ''}</h3>
+                    <span class="actor-industry ${industry.toLowerCase()}">${industry}</span>
+                    <p class="actor-bio">${data.extract ? data.extract.substring(0, 150) + '...' : 'Biography not available'}</p>
+                    <div class="actor-meta">
+                        <span><i class="fas fa-user"></i> ${gender}</span>
+                        <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-name="${actorName}">
+                            <i class="${isFavorite ? 'fas' : 'far'} fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            actorCard.addEventListener('click', (e) => {
+                if (!e.target.closest('.favorite-btn')) {
+                    showActorPage(actorName, industry, gender, data);
+                }
+            });
+            
+            // Add favorite functionality
+            const favoriteBtn = actorCard.querySelector('.favorite-btn');
+            favoriteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleFavorite(actorName, favoriteBtn);
+            });
+            
+            actorsGrid.appendChild(actorCard);
+            
+            if (isSearch) {
+                loadingSpinner.style.display = 'none';
+            }
+        }
+
+        // Toggle favorite
+        function toggleFavorite(actorName, button) {
+            const icon = button.querySelector('i');
+            
+            if (favorites.includes(actorName)) {
+                // Remove from favorites
+                favorites = favorites.filter(name => name !== actorName);
+                icon.className = 'far fa-heart';
+                button.classList.remove('active');
+                showToast(`${actorName} removed from favorites`);
+            } else {
+                // Add to favorites
+                favorites.push(actorName);
+                icon.className = 'fas fa-heart';
+                button.classList.add('active');
+                showToast(`${actorName} added to favorites`);
+            }
+            
+            // Update localStorage
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            
+            // Update the heart icon in the actor name if it exists
+            const actorCard = button.closest('.actor-card');
+            const actorNameElement = actorCard.querySelector('.actor-name');
+            if (favorites.includes(actorName)) {
+                if (!actorNameElement.innerHTML.includes('fa-heart')) {
+                    actorNameElement.innerHTML = `${actorName} <i class="fas fa-heart" style="color: var(--accent);"></i>`;
+                }
+            } else {
+                actorNameElement.innerHTML = actorNameElement.innerHTML.replace(/<i class="fas fa-heart" style="color: var\(--accent\);"><\/i>/, '');
+            }
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Show actor details page
+        async function showActorPage(actorName, industry, gender, data) {
+            document.querySelector('.actors-section').style.display = 'none';
+            document.querySelector('.search-section').style.display = 'none';
+            document.querySelector('.filter-section').style.display = 'none';
+            document.querySelector('footer').style.display = 'none';
+            
+            // Fetch additional images for gallery
+            let galleryImages = [];
+            try {
+                // For a real implementation, you would need to fetch the page content
+                // and extract images, but for this demo we'll use placeholders
+                galleryImages = [
+                    data.thumbnail ? data.thumbnail.source : `https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80`,
+                    `https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80`,
+                    `https://images.unsplash.com/photo-1494790108755-2616c113a1c1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80`,
+                    `https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80`
+                ];
+            } catch (error) {
+                console.error('Error fetching gallery images:', error);
+                galleryImages = [
+                    data.thumbnail ? data.thumbnail.source : `https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80`,
+                    `https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80`
+                ];
+            }
+            
+            actorPage.style.display = 'block';
+            actorPage.innerHTML = `
+                <a href="#" class="back-button" id="backButton">
+                    <i class="fas fa-arrow-left"></i> Back to Celebrities
+                </a>
+                <div class="actor-header">
+                    <div class="actor-image-main-container">
+                        <img src="${data.thumbnail ? data.thumbnail.source : `https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80`}" 
+                             alt="${actorName}" class="actor-main-image">
+                    </div>
+                    <div class="actor-details">
+                        <h1>${actorName}</h1>
+                        <span class="actor-industry-large ${industry.toLowerCase()}">${industry} • ${gender}</span>
+                        <p class="actor-bio-large">${data.extract || 'Biography not available'}</p>
+                        <div class="actor-stats">
+                            <div class="stat">
+                                <div class="stat-value">${data.description || 'Actor'}</div>
+                                <div class="stat-label">Profession</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${industry}</div>
+                                <div class="stat-label">Industry</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value"><a href="${data.content_urls.desktop.page}" target="_blank" style="color: var(--accent); text-decoration: none;">Wikipedia</a></div>
+                                <div class="stat-label">More Info</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-signup" id="addToFavoritesBtn">
+                            <i class="${favorites.includes(actorName) ? 'fas' : 'far'} fa-heart"></i> 
+                            ${favorites.includes(actorName) ? 'Remove from Favorites' : 'Add to Favorites'}
+                        </button>
+                    </div>
+                </div>
+                <div class="gallery-section">
+                    <h2>Photo Gallery</h2>
+                    <div class="gallery-grid">
+                        ${galleryImages.map(img => 
+                            `<div class="gallery-image-container">
+                                <img src="${img}" alt="${actorName}" class="gallery-image">
+                            </div>`
+                        ).join('')}
+                    </div>
+                </div>
+            `;
+            
+            // Add to favorites functionality on actor page
+            const addToFavoritesBtn = document.getElementById('addToFavoritesBtn');
+            addToFavoritesBtn.addEventListener('click', () => {
+                toggleFavorite(actorName, addToFavoritesBtn);
+                
+                // Update button text
+                if (favorites.includes(actorName)) {
+                    addToFavoritesBtn.innerHTML = '<i class="fas fa-heart"></i> Remove from Favorites';
+                } else {
+                    addToFavoritesBtn.innerHTML = '<i class="far fa-heart"></i> Add to Favorites';
+                }
+            });
+            
+            document.getElementById('backButton').addEventListener('click', (e) => {
+                e.preventDefault();
+                actorPage.style.display = 'none';
+                document.querySelector('.actors-section').style.display = 'block';
+                document.querySelector('.search-section').style.display = 'block';
+                document.querySelector('.filter-section').style.display = 'block';
+                document.querySelector('footer').style.display = 'block';
+            });
+        }
+
+        // Search functionality
+        async function searchActors() {
+            const searchTerm = searchInput.value.trim();
+            
+            if (searchTerm === '') {
+                displayPopularActors();
+                return;
+            }
+            
+            loadingSpinner.style.display = 'block';
+            errorMessage.style.display = 'none';
+            actorsGrid.innerHTML = '';
+            
+            try {
+                // Try to fetch data for the searched actor
+                await fetchActorData(searchTerm, "Unknown", "unknown", true);
+            } catch (error) {
+                console.error('Error searching actors:', error);
+                loadingSpinner.style.display = 'none';
+                errorMessage.style.display = 'block';
+            }
+        }
+
+        // Search tag functionality
+        searchTags.forEach(tag => {
+            tag.addEventListener('click', () => {
+                searchInput.value = tag.textContent;
+                searchActors();
+            });
+        });
+
+        // Filter by industry
+        bollywoodLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            searchInput.value = '';
+            actorsGrid.innerHTML = '';
+            errorMessage.style.display = 'none';
+            
+            // Show only Bollywood actors
+            popularActors.forEach(actor => {
+                if (actor.industry === "Bollywood") {
+                    fetchActorData(actor.name, actor.industry, actor.gender, false);
+                }
+            });
+            
+            // Update active filter button
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            document.querySelector('[data-filter="bollywood"]').classList.add('active');
+            
+            showToast("Showing Bollywood stars");
+        });
+
+        hollywoodLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            searchInput.value = '';
+            actorsGrid.innerHTML = '';
+            errorMessage.style.display = 'none';
+            
+            // Show only Hollywood actors
+            popularActors.forEach(actor => {
+                if (actor.industry === "Hollywood") {
+                    fetchActorData(actor.name, actor.industry, actor.gender, false);
+                }
+            });
+            
+            // Update active filter button
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            document.querySelector('[data-filter="hollywood"]').classList.add('active');
+            
+            showToast("Showing Hollywood stars");
+        });
+
+        // Trending actors
+        trendingLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showToast("Showing trending celebrities");
+            // In a real app, this would fetch trending actors from an API
+            displayPopularActors();
+        });
+
+        // Favorites
+        favoritesLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (favorites.length === 0) {
+                showToast("You haven't added any favorites yet");
+                return;
+            }
+            
+            actorsGrid.innerHTML = '';
+            errorMessage.style.display = 'none';
+            
+            // Show favorite actors
+            favorites.forEach(fav => {
+                const actor = popularActors.find(a => a.name === fav);
+                if (actor) {
+                    fetchActorData(actor.name, actor.industry, actor.gender, false);
+                }
+            });
+            
+            showToast("Showing your favorite celebrities");
+        });
+
+        // View toggle
+        gridView.addEventListener('click', () => {
+            gridView.classList.add('active');
+            listView.classList.remove('active');
+            actorsGrid.classList.remove('list-view');
+        });
+
+        listView.addEventListener('click', () => {
+            listView.classList.add('active');
+            gridView.classList.remove('active');
+            actorsGrid.classList.add('list-view');
+        });
+
+        // Filter buttons
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Update active button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                const filter = button.dataset.filter;
+                const actorCards = document.querySelectorAll('.actor-card');
+                
+                actorCards.forEach(card => {
+                    if (filter === 'all' || card.dataset.industry === filter || card.dataset.gender === filter) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Feedback form functionality
+        feedbackButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (feedbackTextarea.value.trim() === '') {
+                showToast("Please enter your feedback before submitting");
+                return;
+            }
+            
+            showToast("Thank you for your valuable feedback!");
+            feedbackTextarea.value = '';
+        });
+
+        // Login modal functionality
+        loginBtn.addEventListener('click', () => {
+            loginModal.style.display = 'flex';
+        });
+
+        closeModal.addEventListener('click', () => {
+            loginModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.style.display = 'none';
+            }
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showToast("Welcome to StarBase Premium!");
+            loginModal.style.display = 'none';
+        });
+
+        // Event listeners
+        searchBtn.addEventListener('click', searchActors);
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                searchActors();
+            }
+        });
+
+        // Initialize the page
+        displayPopularActors();
+    </script>
+</body>
+</html>
+
+    
